@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Laravel\Cashier\Billable;
 
 class ProductController extends Controller
 {
+    use Billable;
+
     public function index(Request $request){
         $products = Product::all();
         return view('product.index', compact('products')); 
@@ -36,12 +39,15 @@ class ProductController extends Controller
         return view('order.checkout', compact('product')); 
     }
 
-    public function processPayment(Request $request) {
+    public function payment(Request $request) {
         // Create a one-time charge using Laravel Cashier
         try {
-            $user = auth()->user(); // If authentication is required
-            $user->charge(1000, $request->input('token')); // Replace '1000' with the amount you want to charge in cents
-            return response()->json(['success' => true]);
+            return "test";
+            $amount = 10.00;
+            // Use Cashier to create a one-time charge.
+            Cashier::charge($amount, $request->input('stripe_token'));
+            // Handle successful payment and any additional logic here.
+            return redirect('/success')->with('message', 'Payment successful');
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()]);
         }

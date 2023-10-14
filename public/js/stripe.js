@@ -1,5 +1,5 @@
 // Set your Stripe public key
-var stripe = Stripe('your_stripe_publishable_key');
+var stripe = Stripe('pk_test_51IIZhJHWljDTRHuTXfsx0qPNlbfiuDnqFYZOLOFHZ5oFaVgvTLr5AKEgl3gFfoNXoxE1vf2wFtNyhbjxjFU8FfIf00jHpAWNW4');
 var elements = stripe.elements();
 
 var style = {
@@ -34,25 +34,31 @@ form.addEventListener('submit', function (event) {
         } else {
             // Token is created. You can send this token to your server to process the payment.
             var token = result.token.id;
-            fetch('/process-payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token: token }),
-            })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                if (data.success) {
-                    // Payment was successful, you can redirect the user to a success page.
-                    window.location.href = '/success';
-                } else {
-                    // Payment failed, you can redirect the user to an error page.
-                    window.location.href = '/error';
-                }
-            });
+            stripeTokenHandler(token);
+            // fetch('/payment', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ token: token,  }),
+            // })
+            // .then(function (response) {
+            //     return response.json();
+            // })
+            // .then(function (data) {
+            //     if (data.success) {
+            //         // Payment was successful, you can redirect the user to a success page.
+            //         window.location.href = '/success';
+            //     } else {
+            //         // Payment failed, you can redirect the user to an error page.
+            //         window.location.href = '/error';
+            //     }
+            // });
+            $("#payment_form").submit();
         }
     });
 });
+
+function stripeTokenHandler(token) {
+    $("#stripe_token").val(token);    
+}
