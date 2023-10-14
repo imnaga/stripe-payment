@@ -42,9 +42,9 @@
     <p>Price: ${{ $product->price }}</p>
     <p>Description: {{ $product->description }}</p>
     
-    <form action="/payment" method="post" name="payment_form" id="payment_form">
+    <form action="/payment" method="post" id="payment-form">
         @csrf
-        <input type="hidden" name="stripe_token" />
+        <input type="text" name="stripe_token" id="stripe_token" />
         <div class="form-group">
             <label for="card-element">Credit or debit card</label>
             <div id="card-element">

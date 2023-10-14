@@ -34,13 +34,15 @@ form.addEventListener('submit', function (event) {
         } else {
             // Token is created. You can send this token to your server to process the payment.
             var token = result.token.id;
-            stripeTokenHandler(token);
-            // fetch('/payment', {
+            document.getElementById('stripe_token').value=token;
+            document.getElementById('payment-form').submit();
+
+            // fetch('/process-payment', {
             //     method: 'POST',
             //     headers: {
             //         'Content-Type': 'application/json',
             //     },
-            //     body: JSON.stringify({ token: token,  }),
+            //     body: JSON.stringify({ token: token }),
             // })
             // .then(function (response) {
             //     return response.json();
@@ -51,14 +53,10 @@ form.addEventListener('submit', function (event) {
             //         window.location.href = '/success';
             //     } else {
             //         // Payment failed, you can redirect the user to an error page.
+            //         // document.getElementById('stripe_token').value='new value';
             //         window.location.href = '/error';
             //     }
             // });
-            $("#payment_form").submit();
         }
     });
 });
-
-function stripeTokenHandler(token) {
-    $("#stripe_token").val(token);    
-}

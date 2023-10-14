@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Billable;
 
 class ProductController extends Controller
@@ -42,10 +43,10 @@ class ProductController extends Controller
     public function payment(Request $request) {
         // Create a one-time charge using Laravel Cashier
         try {
-            return "test";
+            return $request->post("stripe_token");
             $amount = 10.00;
             // Use Cashier to create a one-time charge.
-            Cashier::charge($amount, $request->input('stripe_token'));
+            Cashier::charge($amount, $request->post("stripe_token"));
             // Handle successful payment and any additional logic here.
             return redirect('/success')->with('message', 'Payment successful');
         } catch (\Exception $e) {
