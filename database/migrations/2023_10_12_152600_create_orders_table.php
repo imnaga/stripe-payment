@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('guest_id');
             $table->string('status');
             $table->decimal('total_price', $precision = 8, $scale = 2);
             $table->string('session_id');

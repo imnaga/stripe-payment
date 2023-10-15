@@ -19,6 +19,7 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->name(),
             'price' => fake()->randomFloat(2, 0, 100),
+            'description' => fake()->text(200),
             'image' => fake()->imageUrl,
         ];
     }

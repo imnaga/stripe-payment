@@ -9,7 +9,7 @@
             </div>
             <div class="text-box">
                 <h2 class="item">{{$product->name}}</h2>
-                <h3 class="price">{{$product->price}}</h3>
+                <h3 class="price">&#8377;{{$product->price}}</h3>
                 <p class="description">A bag of delicious oranges!</p>
                 <label for="item-1-quantity">Quantity:</label>
                 <input type="text" name="item-1-quantity" id="item-1-quantity" value="1">

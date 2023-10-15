@@ -16,12 +16,13 @@
   <div class="table-content">
     <div class="cart-product">  
       <div class="cart-image-box">
-        <div class="cart-images" id="image-3"></div>
+        <div class="cart-images">
+        <img src="{{$product->image}}" style="max-width:100%">
+        </div>
       </div>
       <h2 class="cart-item">{{ $product->name }}</h2>
       <p class="cart-description">
-        I am using Stripe as my payment processor on BigCommerce. 
-        It works perfectly. The problem is that my site theme has a black background.
+        {{$product->description}}
       </p>
     </div>
     <div class="cart-price">
@@ -46,6 +47,8 @@
     <form action="/payment" method="post" id="payment-form">
         @csrf
         <input type="hidden" name="stripe_token" id="stripe_token" />
+        <input type="hidden" name="post_id" id="post_id" value="{{ $product->id }}"/>
+        <input type="hidden" name="amount" id="amount" value="{{ $product->price }}" />
         <div class="form-group">
             <div id="card-element">
                 <!-- A Stripe Element will be inserted here. -->
@@ -56,9 +59,6 @@
         <button type="submit">Pay Now</button> 
     </form>
     <script src="{{ asset('js/stripe.js') }}"></script>
-  </div>
-
-
-        
+  </div>        
 @endif
 @stop
