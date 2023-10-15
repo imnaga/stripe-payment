@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Guest;
+use App\Models\Order;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Billable;
 use Stripe\Stripe;
@@ -23,24 +24,6 @@ class ProductController extends Controller
     public function checkout(Request $request){
         $postId = $request->post("product_id");
         $product = Product::find($postId);
-        
-        // $stripe = new \Stripe\StripeClient(env('STRIPE_SECRETE_KEY'));
-        // $checkout_session = $stripe->checkout->sessions->create([
-        // 'line_items' => [[
-        //     'price_data' => [
-        //     'currency' => 'inr',
-        //     'product_data' => [
-        //         'name' => $product->name,
-        //     ],
-        //     'unit_amount' => round($product->price * 100),
-        //     ],
-        //     'quantity' => 1,
-        // ]],
-        // 'mode' => 'payment',
-        // 'success_url' => route('checkout.success', [], true),
-        // 'cancel_url' => route('checkout.cancel', [], true),
-        // ]);
-
         return view('order.checkout', compact('product')); 
     }
 
@@ -73,13 +56,15 @@ class ProductController extends Controller
                     'customer' => $guest->stripe_customer_id,
                 ]);
                 if($result && $result->id && $result->status == "succeeded"){
-                    $guest = Guest::create([
+                    $order = Order::create([
                         'session_id' => $result->id,
                         'status' => $result->status,
-                        'guest_id' => $result->$guest->id,
+                        'guest_id' => $guest->id,
                         'total_price' => $amount,
 
                     ]);
+                    return redirect('/success')->with('message', 'Payment successful');
+
                 } else {
                     return $result->status;
                 }
@@ -89,5 +74,9 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()]);
         }
+    }
+
+    public function success(Request $request){
+        return view('order.success'); 
     }
 }
