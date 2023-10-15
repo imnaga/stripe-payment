@@ -72,6 +72,7 @@ class ProductController extends Controller
                     'currency' => 'inr',
                     'customer' => $guest->stripe_customer_id,
                 ]);
+                return $result;
                 if($result && $result->status){
                     /* 
                     sample success response need to work based on this response

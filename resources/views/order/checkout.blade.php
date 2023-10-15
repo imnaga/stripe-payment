@@ -1,65 +1,64 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Checkout Page</title>
-    <script src="https://js.stripe.com/v3/"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style type="text/css">
-        /**
- * The CSS shown here will not be introduced in the Quickstart guide, but shows
- * how you can use CSS to style your Element's container.
- */
-        .StripeElement {
-            background-color: white;
-            height: 40px;
-            padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            box-shadow: 0 1px 3px 0 #e6ebf1;
-            -webkit-transition: box-shadow 150ms ease;
-            transition: box-shadow 150ms ease;
-        }
+@extends('layouts.default')
+@section('content')
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('css/stripe.css') }}">
+<script src="https://js.stripe.com/v3/"></script>
+@if(isset($product))
+<div class="cart-section">
+  
+  <div class="table-heading">
+    <h2 class="cart-product">Product</h2>
+    <h2 class="cart-price">Price</h2>
+    <h2 class="cart-quantity">Quantity</h2>
+    <h2 class="cart-total">Total</h2>
+  </div>
+  
+  <div class="table-content">
+    <div class="cart-product">  
+      <div class="cart-image-box">
+        <div class="cart-images" id="image-3"></div>
+      </div>
+      <h2 class="cart-item">{{ $product->name }}</h2>
+      <p class="cart-description">
+        I am using Stripe as my payment processor on BigCommerce. 
+        It works perfectly. The problem is that my site theme has a black background.
+      </p>
+    </div>
+    <div class="cart-price">
+      <h3 class="price">&#8377;{{ $product->price }}</h3>
+    </div>
+    <div class="cart-quantity">
+      <input type="text" name="cart-1-quantity" id="cart-1-quantity" value="1">
+    </div>
+    <div class="cart-total">
+      <h3 class="price">&#8377;{{ $product->price }}</h3>
+      <button type="button" class="remove" name="remove-3" id="remove-3">x</button>
+    </div>
+  </div>
+  <div class="table-heading">
+    <div>
+        <h1>Payment</h2>
+    </div>
+</div>
 
-        .StripeElement--focus {
-            box-shadow: 0 1px 3px 0 #cfd7df;
-        }
-
-        .StripeElement--invalid {
-            border-color: #fa755a;
-        }
-
-        .StripeElement--webkit-autofill {
-            background-color: #fefde5 !important;
-        }
-    </style>
-</head>
-<body>
-    <h1>Checkout</h1>
-
-    <p>Selected Product:</p>
-    @if(isset($product))
-    <p><strong>{{ $product->name }}</strong></p>
-    <p>Price: ${{ $product->price }}</p>
-    <p>Description: {{ $product->description }}</p>
-    
+</div>
+  <div>
     <form action="/payment" method="post" id="payment-form">
         @csrf
-        <input type="text" name="stripe_token" id="stripe_token" />
+        <input type="hidden" name="stripe_token" id="stripe_token" />
         <div class="form-group">
-            <label for="card-element">Credit or debit card</label>
             <div id="card-element">
                 <!-- A Stripe Element will be inserted here. -->
             </div>
             <!-- Used to display form errors. -->
             <div id="card-errors" role="alert"></div>
         </div>
-       
         <button type="submit">Pay Now</button> 
     </form>
-
     <script src="{{ asset('js/stripe.js') }}"></script>
+  </div>
 
-    @endif
-</body>
-</html>
 
+        
+@endif
+@stop

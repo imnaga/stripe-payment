@@ -4,8 +4,15 @@ var elements = stripe.elements();
 
 var style = {
     base: {
-        fontSize: '16px',
-        color: '#32325d',
+        iconColor: '#666EE8',
+      lineHeight: '40px',
+      fontWeight: 300,
+      fontFamily: 'Helvetica Neue',
+      fontSize: '15px',
+      '::placeholder': {
+        color: '#CFD7E0',
+      },
+
     },
 };
 
